@@ -6,12 +6,12 @@ terraform {
       #provider-version
     }
   }
-  backend "s3" {
-    bucket = "devops-ashok"
-    key    = "ec2-module"
-    region = "us-east-1"
-    dynamodb_table = "ashok-locking"
-  }
+  #backend "s3" {
+    #bucket = "devops-ashok"
+    #key    = "ec2-module"
+    #region = "us-east-1"
+    #dynamodb_table = "ashok-locking"
+  #}
 }
 
 provider "aws" {
