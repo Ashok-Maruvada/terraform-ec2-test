@@ -7,10 +7,10 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "daws-remote-state"
+    bucket = "devops-ashok"
     key    = "ec2-module"
     region = "us-east-1"
-    dynamodb_table = "daws-locking"
+    dynamodb_table = "ashok-locking"
   }
 }
 
