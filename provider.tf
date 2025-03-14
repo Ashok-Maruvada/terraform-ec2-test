@@ -7,7 +7,7 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "ashok-remote-state"
+    bucket = "ash-dev-bucket"
     key    = "ec2-module"
     region = "us-east-1"
     dynamodb_table = "ashok-locking"
