@@ -1,0 +1,72 @@
+name: Terraform Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Select branch"
+        required: true
+        type: choice
+        options: []
+      action:
+        description: "Terraform Action"
+        required: true
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    # IMPORTANT: Use the selected branch
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
+
+      # -----------------------------
+      # Configure AWS Credentials with OIDC
+      # -----------------------------
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::<ACCOUNT_ID>:role/<OIDC-ROLE-NAME>
+          role-session-name: GitHubOIDCSession
+          aws-region: ap-south-1
+
+      # -----------------------------
+      # Terraform Setup
+      # -----------------------------
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      # -----------------------------
+      # Terraform Plan
+      # -----------------------------
+      - name: Terraform Plan
+        if: ${{ github.event.inputs.action == 'plan' }}
+        run: terraform plan -out=tfplan
+
+      # -----------------------------
+      # Terraform Apply
+      # -----------------------------
+      - name: Terraform Apply
+        if: ${{ github.event.inputs.action == 'apply' }}
+        run: terraform apply -auto-approve
+
+      # -----------------------------
+      # Terraform Destroy
+      # -----------------------------
+      - name: Terraform Destroy
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        run: terraform destroy -auto-approve
