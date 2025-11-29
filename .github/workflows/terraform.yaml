@@ -3,11 +3,11 @@ name: Terraform Workflow
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: "Select branch"
-        required: true
-        type: choice
-        options: []
+      # branch:
+      #   description: "Select branch"
+      #   required: true
+      #   type: choice
+      #   options: []
       action:
         description: "Terraform Action"
         required: true
