@@ -16,6 +16,9 @@ on:
           - plan
           - apply
           - destroy
+permissions:
+  id-token: write     # needed for GitHub → AWS OIDC
+  contents: read      # needed for checkout
 
 jobs:
   terraform:
